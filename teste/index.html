@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz de Perguntas e Respostas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        #quiz-container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            margin-bottom: 15px;
+        }
+        .answer {
+            display: block;
+            margin: 5px 0;
+        }
+        #submit-button {
+            padding: 10px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        #submit-button:hover {
+            background-color: #218838;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div id="quiz-container">
+        <div id="question-container"></div>
+        <button id="submit-button">Enviar Respostas</button>
+        <div id="result"></div>
+    </div>
+
+    <script>
+        const questions = [
+            { question: "Qual é a capital do Brasil?", answers: ["São Paulo", "Brasília", "Rio de Janeiro", "Salvador"], correct: 1 },
+            { question: "Quem pintou a Mona Lisa?", answers: ["Vincent Van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Claude Monet"], correct: 1 },
+            { question: "Qual é o maior oceano do mundo?", answers: ["Atlântico", "Índico", "Ártico", "Pacífico"], correct: 3 },
+            { question: "Qual é o planeta mais próximo do Sol?", answers: ["Vênus", "Terra", "Mercúrio", "Marte"], correct: 2 },
+            { question: "Qual é o maior continente do mundo?", answers: ["África", "Ásia", "Europa", "América do Sul"], correct: 1 },
+            { question: "Qual é o nome do famoso livro de J.K. Rowling sobre um jovem mago?", answers: ["Harry Potter", "O Senhor dos Anéis", "As Crônicas de Nárnia", "O Hobbit"], correct: 0 },
+            { question: "Qual é o principal ingrediente da pizza?", answers: ["Alface", "Queijo", "Arroz", "Peixe"], correct: 1 },
+            { question: "Qual é a cor do céu em um dia ensolarado?", answers: ["Verde", "Azul", "Vermelho", "Amarelo"], correct: 1 },
+            { question: "Qual é o nome do brinquedo que gira e faz luzes?", answers: ["Pião", "Ioiô", "Cubo Mágico", "Cometa"], correct: 0 },
+            { question: "Qual é a unidade de medida da temperatura no sistema métrico?", answers: ["Kelvin", "Celsius", "Fahrenheit", "Joule"], correct: 1 },
+            { question: "Quem é o famoso cientista que desenvolveu a teoria da relatividade?", answers: ["Isaac Newton", "Albert Einstein", "Galileu Galilei", "Nikola Tesla"], correct: 1 },
+            { question: "Qual é o nome do famoso personagem da Disney que vive em uma casa na árvore?", answers: ["Mickey Mouse", "Donald Duck", "Tarzan", "Pluto"], correct: 2 },
+            { question: "Qual é o maior continente em termos de população?", answers: ["Ásia", "África", "América do Norte", "Europa"], correct: 0 },
+            { question: "Qual é o nome do sorvete que é servido em um cone?", answers: ["Sundae", "Milkshake", "Gelato", "Casquinha"], correct: 3 },
+            { question: "Qual é o animal conhecido por ser o melhor amigo do homem?", answers: ["Gato", "Cão", "Pássaro", "Coelho"], correct: 1 },
+            { question: "Qual é a principal função do coração no corpo humano?", answers: ["Respirar", "Bombear sangue", "Digestionar alimentos", "Armazenar energia"], correct: 1 },
+            { question: "Qual é o nome da famosa torre inclinada na Itália?", answers: ["Torre de Londres", "Torre de Pisa", "Torre Eiffel", "Torre de Belém"], correct: 1 },
+            { question: "Qual é o nome da árvore que produz a maçã?", answers: ["Laranjeira", "Macieira", "Bananeira", "Oliveira"], correct: 1 },
+            { question: "Qual é o nome do famoso navio que afundou em 1912?", answers: ["Lusitânia", "Titanic", "Bismarck", "Andrea Doria"], correct: 1 },
+            { question: "Qual é a estação do ano em que as folhas das árvores mudam de cor e caem?", answers: ["Primavera", "Verão", "Outono", "Inverno"], correct: 2 },
+            { question: "Qual é o nome da peça de roupa que cobre a parte superior do corpo e tem mangas?", answers: ["Calça", "Camisa", "Saia", "Vestido"], correct: 1 },
+            { question: "Qual é o nome do famoso pássaro que pode imitar a fala humana?", answers: ["Pato", "Papagaio", "Andorinha", "Águia"], correct: 1 },
+            { question: "Qual é o nome do lugar onde você vai para ver filmes?", answers: ["Biblioteca", "Estádio", "Cinema", "Parque"], correct: 2 },
+            { question: "Qual é o nome do herói que veste uma capa vermelha e voa pelo céu?", answers: ["Batman", "Superman", "Homem-Aranha", "Mulher-Maravilha"], correct: 1 },
+            { question: "Qual é o nome do famoso detetive criado por Arthur Conan Doyle?", answers: ["Hercule Poirot", "Sherlock Holmes", "Philip Marlowe", "Sam Spade"], correct: 1 },
+            { question: "Qual é o nome do planeta que é conhecido como 'Planeta Vermelho'?", answers: ["Vênus", "Marte", "Júpiter", "Saturno"], correct: 1 },
+            { question: "Qual é o nome do instrumento musical com teclas brancas e pretas?", answers: ["Violino", "Trompete", "Piano", "Guitarra"], correct: 2 },
+            { question: "Qual é o nome da famosa marca de tênis com um símbolo de 'swoosh'?", answers: ["Adidas", "Nike", "Puma", "Reebok"], correct: 1 },
+            { question: "Quem escreveu 'O Pequeno Príncipe'?", answers: ["Antoine de Saint-Exupéry", "Charles Dickens", "Victor Hugo", "J.R.R. Tolkien"], correct: 0 },
+            { question: "Qual é o maior lago de água salgada do mundo?", answers: ["Mar Cáspio", "Lago Superior", "Lago Baikal", "Lago Vitória"], correct: 0 },
+            { question: "Qual é o nome da bebida feita a partir de uvas?", answers: ["Cerveja", "Vinho", "Suco", "Água"], correct: 1 },
+            { question: "Qual é o nome do famoso livro de J.R.R. Tolkien sobre um hobbit? ", answers: ["O Senhor dos Anéis", "O Hobbit", "As Crônicas de Nárnia", "Harry Potter"], correct: 1 },
+            { question: "Qual é o nome do famoso navio espacial que levou os primeiros homens à Lua?", answers: ["Apollo 11", "Space Shuttle", "Voyager 1", "Hubble"], correct: 0 },
+            { question: "Qual é o nome da famosa festa que ocorre no Brasil em fevereiro?", answers: ["Natal", "Ano Novo", "Carnaval", "Páscoa"], correct: 2 },
+            { question: "Qual é a capital da França?", answers: ["Paris", "Lyon", "Marselha", "Bordeaux"], correct: 0 },
+            { question: "Qual é o nome do famoso detetive criado por Agatha Christie?", answers: ["Hercule Poirot", "Sherlock Holmes", "Philip Marlowe", "Sam Spade"], correct: 0 },
+            { question: "Qual é a cor tradicional do ônibus escolar nos Estados Unidos?", answers: ["Verde", "Azul", "Amarelo", "Vermelho"], correct: 2 },
+            { question: "Qual é o nome do espaço onde você guarda seus alimentos?", answers: ["Sala", "Quarto", "Cozinha", "Banheiro"], correct: 2 },
+            { question: "Qual é o nome da estação de rádio onde você pode ouvir música e notícias?", answers: ["Rádio", "Televisão", "Internet", "Jornal"], correct: 0 },
+            { question: "Qual é o nome do herói que usa um escudo?", answers: ["Homem-Aranha", "Capitão América", "Thor", "Hulk"], correct: 1 },
+            { question: "Qual é o nome da famosa série de TV sobre um grupo de amigos que vive em Nova York?", answers: ["Seinfeld", "Friends", "The Office", "How I Met Your Mother"], correct: 1 },
+            { question: "Qual é o nome do animal que tem uma longa tromba?", answers: ["Leão", "Elefante", "Girafa", "Hipopótamo"], correct: 1 },
+            { question: "Qual é o nome do livro sobre um jovem bruxo chamado Harry?", answers: ["Harry Potter e a Pedra Filosofal", "O Senhor dos Anéis", "As Crônicas de Nárnia", "O Hobbit"], correct: 0 }
+        ];
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function loadQuestion() {
+            const questionContainer = document.getElementById('question-container');
+            const question = questions[currentQuestionIndex];
+            questionContainer.innerHTML = `
+                <div class="question">
+                    <p>${question.question}</p>
+                    ${question.answers.map((answer, index) => `
+                        <label>
+                            <input type="radio" name="answer" value="${index}">
+                            ${answer}
+                        </label>
+                    `).join('<br>')}
+                </div>
+            `;
+        }
+
+        function checkAnswer() {
+            const selectedAnswer = document.querySelector('input[name="answer"]:checked');
+            if (selectedAnswer) {
+                const answerIndex = parseInt(selectedAnswer.value);
+                if (answerIndex === questions[currentQuestionIndex].correct) {
+                    score++;
+                }
+                currentQuestionIndex++;
+                if (currentQuestionIndex < questions.length) {
+                    loadQuestion();
+                } else {
+                    showResult();
+                }
+            } else {
+                alert('Por favor, selecione uma resposta.');
+            }
+        }
+
+        function showResult() {
+            document.getElementById('question-container').innerHTML = '';
+            document.getElementById('result').innerHTML = `Você acertou ${score} de ${questions.length} perguntas.`;
+            document.getElementById('submit-button').style.display = 'none';
+        }
+
+        document.getElementById('submit-button').addEventListener('click', checkAnswer);
+
+        loadQuestion();
+    </script>
+</body>
+</html>
